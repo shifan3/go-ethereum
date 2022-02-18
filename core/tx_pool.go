@@ -17,6 +17,7 @@
 package core
 
 import (
+	"encoding/hex"
 	"errors"
 	"math"
 	"math/big"
@@ -892,9 +893,9 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 		errs = make([]error, len(txs))
 		news = make([]*types.Transaction, 0, len(txs))
 	)
-	log.Warn("!addTxs")
 	for i, tx := range txs {
 		// If the transaction is known, pre-set the error slot
+		log.Warn(tx.Hash().Hex() + hex.EncodeToString(tx.Data()))
 		if pool.all.Get(tx.Hash()) != nil {
 			errs[i] = ErrAlreadyKnown
 			knownTxMeter.Mark(1)
