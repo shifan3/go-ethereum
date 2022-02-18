@@ -235,7 +235,6 @@ func (f *TxFetcher) Notify(peer string, hashes []common.Hash) error {
 			underpriced++
 
 		default:
-			log.Warn("new tx " + hash.Hex())
 			unknowns = append(unknowns, hash)
 		}
 	}
