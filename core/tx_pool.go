@@ -909,7 +909,7 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 			invalidTxMeter.Mark(1)
 			continue
 		}
-		log.Warn("new tx " + tx.Hash().Hex())
+		//log.Warn("new tx " + tx.Hash().Hex())
 		// Accumulate all unknown transactions for deeper processing
 		news = append(news, tx)
 	}
