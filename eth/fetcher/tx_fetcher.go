@@ -181,7 +181,6 @@ type TxFetcher struct {
 // NewTxFetcher creates a transaction fetcher to retrieve transaction
 // based on hash announcements.
 func NewTxFetcher(hasTx func(common.Hash) bool, addTxs func([]*types.Transaction) []error, fetchTxs func(string, []common.Hash) error) *TxFetcher {
-	log.Warn("!1")
 	return NewTxFetcherForTests(hasTx, addTxs, fetchTxs, mclock.System{}, nil)
 }
 
@@ -190,7 +189,6 @@ func NewTxFetcher(hasTx func(common.Hash) bool, addTxs func([]*types.Transaction
 func NewTxFetcherForTests(
 	hasTx func(common.Hash) bool, addTxs func([]*types.Transaction) []error, fetchTxs func(string, []common.Hash) error,
 	clock mclock.Clock, rand *mrand.Rand) *TxFetcher {
-	log.Warn("!2")
 	return &TxFetcher{
 		notify:      make(chan *txAnnounce),
 		cleanup:     make(chan *txDelivery),
