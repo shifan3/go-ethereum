@@ -19,6 +19,7 @@ package eth
 import (
 	"fmt"
 	"math/big"
+	"strconv"
 	"sync/atomic"
 	"time"
 
@@ -59,7 +60,7 @@ func (h *ethHandler) AcceptTxs() bool {
 // Handle is invoked from a peer's message handler when it receives a new remote
 // message that the handler couldn't consume and serve itself.
 func (h *ethHandler) Handle(peer *eth.Peer, packet eth.Packet) error {
-	log.Warn("!a5", h.AcceptTxs())
+	log.Warn("!a5 " + strconv.FormatBool(h.AcceptTxs()))
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
 	case *eth.NewBlockHashesPacket:
