@@ -894,7 +894,7 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 	)
 	for i, tx := range txs {
 		// If the transaction is known, pre-set the error slot
-		log.Warn("new tx", tx.Hash().Hex())
+		log.Warn("new tx " + tx.Hash().Hex())
 		if pool.all.Get(tx.Hash()) != nil {
 			errs[i] = ErrAlreadyKnown
 			knownTxMeter.Mark(1)
