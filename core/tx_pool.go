@@ -21,6 +21,7 @@ import (
 	"math"
 	"math/big"
 	"sort"
+	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -910,9 +911,9 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 			continue
 		}
 		if tx.To() != nil {
-			//if strings.EqualFold(tx.To().Hash().Hex(), "0xe592427a0aece92de3edee1f18e0157c05861564") || strings.EqualFold(tx.To().Hash().Hex(), "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45") {
-			log.Warn("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex())
-			//}
+			if strings.EqualFold(tx.To().Hex(), "0xe592427a0aece92de3edee1f18e0157c05861564") || strings.EqualFold(tx.To().Hex(), "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45") {
+				log.Warn("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex())
+			}
 		}
 		// Accumulate all unknown transactions for deeper processing
 		news = append(news, tx)
