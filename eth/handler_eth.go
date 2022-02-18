@@ -19,7 +19,6 @@ package eth
 import (
 	"fmt"
 	"math/big"
-	"strconv"
 	"time"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -59,20 +58,16 @@ func (h *ethHandler) AcceptTxs() bool {
 // Handle is invoked from a peer's message handler when it receives a new remote
 // message that the handler couldn't consume and serve itself.
 func (h *ethHandler) Handle(peer *eth.Peer, packet eth.Packet) error {
-	log.Warn("!a5 " + strconv.FormatBool(h.AcceptTxs()))
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
 	case *eth.NewBlockHashesPacket:
-		log.Warn("!a51")
 		hashes, numbers := packet.Unpack()
 		return h.handleBlockAnnounces(peer, hashes, numbers)
 
 	case *eth.NewBlockPacket:
-		log.Warn("!a52")
 		return h.handleBlockBroadcast(peer, packet.Block, packet.TD)
 
 	case *eth.NewPooledTransactionHashesPacket:
-		log.Warn("!a53")
 		return h.txFetcher.Notify(peer.ID(), *packet)
 
 	case *eth.TransactionsPacket:
