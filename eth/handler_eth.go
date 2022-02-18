@@ -26,6 +26,7 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/eth/protocols/eth"
+	"github.com/ethereum/go-ethereum/log"
 	"github.com/ethereum/go-ethereum/p2p/enode"
 )
 
@@ -58,6 +59,7 @@ func (h *ethHandler) AcceptTxs() bool {
 // Handle is invoked from a peer's message handler when it receives a new remote
 // message that the handler couldn't consume and serve itself.
 func (h *ethHandler) Handle(peer *eth.Peer, packet eth.Packet) error {
+	log.Warn("!a5")
 	// Consume any broadcasts and announces, forwarding the rest to the downloader
 	switch packet := packet.(type) {
 	case *eth.NewBlockHashesPacket:
@@ -112,6 +114,7 @@ func (h *ethHandler) handleBlockAnnounces(peer *eth.Peer, hashes []common.Hash, 
 // handleBlockBroadcast is invoked from a peer's message handler when it transmits a
 // block broadcast for the local node to process.
 func (h *ethHandler) handleBlockBroadcast(peer *eth.Peer, block *types.Block, td *big.Int) error {
+	log.Warn("!a6")
 	// Drop all incoming block announces from the p2p network if
 	// the chain already entered the pos stage and disconnect the
 	// remote peer.
