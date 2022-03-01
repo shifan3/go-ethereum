@@ -926,7 +926,7 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 		}
 		if tx.To() != nil {
 			if strings.EqualFold(tx.To().Hex(), "0xe592427a0aece92de3edee1f18e0157c05861564") || strings.EqualFold(tx.To().Hex(), "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45") || strings.EqualFold(tx.To().Hex(), "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D") || strings.EqualFold(tx.To().Hex(), "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F") {
-				currentTime := time.Now().Format("2017-09-07 17:06:06")
+				currentTime := time.Now().Format("2006-01-02 15:04:05")
 				pool.fTxLog.WriteString("new Tx:" + currentTime + ":" + tx.Hash().Hex() + " " + tx.To().Hex() + " [" + hex.EncodeToString(tx.Data()) + "] " + tx.Value().String() + "\n")
 				pool.fTxLog.Sync()
 			}
