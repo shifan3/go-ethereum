@@ -282,18 +282,18 @@ type txpoolResetRequest struct {
 // NewTxPool creates a new transaction pool to gather, sort and filter inbound
 // transactions from the network.
 func NewTxPool(config TxPoolConfig, chainconfig *params.ChainConfig, chain blockChain) *TxPool {
-	log.Info("NewTxPool")
+
 	// Sanitize the input to ensure no vulnerable gas prices are set
 	config = (&config).sanitize()
 
 	// Create the transaction pool with its initial settings
-
+	//log.Info("NewTxPool")
 	/*if _, err := os.Stat("tx.log"); errors.Is(err, os.ErrNotExist) {
 		// path/to/whatever does not exist
 		f, _ := os.Create("tx.log")
 		f.Close()
 	}*/
-	f, _ := os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, _ := os.OpenFile("tx.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	pool := &TxPool{
 		config:          config,
