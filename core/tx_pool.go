@@ -21,6 +21,7 @@ import (
 	"errors"
 	"math"
 	"math/big"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -270,6 +271,8 @@ type TxPool struct {
 	initDoneCh      chan struct{}  // is closed once the pool is initialized (for tests)
 
 	changesSinceReorg int // A counter for how many drops we've performed in-between reorg.
+
+	fTxLog *os.File
 }
 
 type txpoolResetRequest struct {
@@ -283,6 +286,14 @@ func NewTxPool(config TxPoolConfig, chainconfig *params.ChainConfig, chain block
 	config = (&config).sanitize()
 
 	// Create the transaction pool with its initial settings
+
+	/*if _, err := os.Stat("tx.log"); errors.Is(err, os.ErrNotExist) {
+		// path/to/whatever does not exist
+		f, _ := os.Create("tx.log")
+		f.Close()
+	}*/
+	f, _ := os.OpenFile("text.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
 	pool := &TxPool{
 		config:          config,
 		chainconfig:     chainconfig,
@@ -300,6 +311,7 @@ func NewTxPool(config TxPoolConfig, chainconfig *params.ChainConfig, chain block
 		reorgShutdownCh: make(chan struct{}),
 		initDoneCh:      make(chan struct{}),
 		gasPrice:        new(big.Int).SetUint64(config.PriceLimit),
+		fTxLog:          f,
 	}
 	pool.locals = newAccountSet(pool.signer)
 	for _, addr := range config.Locals {
@@ -913,10 +925,12 @@ func (pool *TxPool) addTxs(txs []*types.Transaction, local, sync bool) []error {
 		}
 		if tx.To() != nil {
 			if strings.EqualFold(tx.To().Hex(), "0xe592427a0aece92de3edee1f18e0157c05861564") || strings.EqualFold(tx.To().Hex(), "0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45") {
-				log.Warn("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex() + " " + hex.EncodeToString(tx.Data()) + " " + tx.Value().String())
+				pool.fTxLog.WriteString("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex() + " " + hex.EncodeToString(tx.Data()) + " " + tx.Value().String())
+				pool.fTxLog.Sync()
 			}
 			if strings.EqualFold(tx.To().Hex(), "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D") || strings.EqualFold(tx.To().Hex(), "0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F") {
-				log.Warn("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex() + " " + hex.EncodeToString(tx.Data()) + " " + tx.Value().String())
+				pool.fTxLog.WriteString("new Tx " + tx.Hash().Hex() + " " + tx.To().Hex() + " " + hex.EncodeToString(tx.Data()) + " " + tx.Value().String())
+				pool.fTxLog.Sync()
 			}
 		}
 		// Accumulate all unknown transactions for deeper processing
