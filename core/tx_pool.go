@@ -288,11 +288,11 @@ func NewTxPool(config TxPoolConfig, chainconfig *params.ChainConfig, chain block
 
 	// Create the transaction pool with its initial settings
 	//log.Info("NewTxPool")
-	/*if _, err := os.Stat("tx.log"); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat("tx.log"); errors.Is(err, os.ErrNotExist) {
 		// path/to/whatever does not exist
-		f, _ := os.Create("tx.log")
-		f.Close()
-	}*/
+		os.Remove("tx.log")
+
+	}
 	f, _ := os.OpenFile("tx.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 
 	pool := &TxPool{
